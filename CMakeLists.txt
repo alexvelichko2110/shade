@@ -79,6 +79,11 @@ set (HEADERS
 ./render.h
 ./node.h
 ./camera.h
+./font_render.h
+./rect_render.h
+./line_render.h
+./glm_includes.h
+./vertex.h
 )
 
 

@@ -25,6 +25,8 @@ public:
 
     void load_shader(const std::string& name, const std::string& vspath, const std::string& fspath) {
 
+        //std::cout << "name " << name << " vs " << vspath << " fs " << fspath << std::endl;
+
         std::shared_ptr<Shader> shader = std::make_shared<Shader>();
 
         shader->set_vertex_shader_path(vspath);

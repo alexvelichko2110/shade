@@ -26,15 +26,16 @@ void Render::draw_buffer(Buffer* buffer, bool blend_enable)
 
 void Render::draw_buffer_u(Buffer* buffer, Node* node, Camera* camera, Shader* shader, bool blend_enable)
 {
+    //std::cout << " iter4" << std::endl;
+
     // Be sure to activate the shader
     shader->use();
-
 
     glm::mat4 P = camera->get_proj_matrix();
     glm::mat4 V = camera->get_node()->get_mat();
 
     glm::mat4 M = node->get_mat_inverse();
-
+    //std::cout << " iter5" << std::endl;
     // glm::mat4 V = glm::mat4(1.0f);
     // glm::mat4 M = glm::mat4(1.0f);
 
