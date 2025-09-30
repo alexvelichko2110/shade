@@ -64,13 +64,30 @@ public:
     }
     
 
-    void draw_buffer_u(Buffer* buffer, Node* node, Camera* camera, Shader* shader, bool blend);
+    void draw_buffer_u(Buffer* buffer, Node* node, Camera* camera, bool blend);
 
     // void set_texture(int slot, Texture* texture)
     // {
     //     glActiveTexture ( GL_TEXTURE0 );
     //     glBindTexture ( GL_TEXTURE_2D, texture->get_texID() );
     // }
+
+
+    void load_resources_all()
+    {
+        rm()->load_shader("rect_solid", "./resources/simple_one_mat.vs", "./resources/rect_solid.fs");
+        rm()->load_shader("rect_tex", "./resources/simple_one_mat.vs", "./resources/rect_texture.fs");
+
+        rm()->load_shader("text", "./resources/text.vs", "./resources/text.fs");
+        rm()->load_shader("line", "./resources/line.vs", "./resources/line.fs");
+
+        rm()->load_shader("poly", "./resources/simple_one_mat.vs", "./resources/poly.fs");
+        rm()->load_shader("line1", "./resources/simple_one_mat.vs", "./resources/lines.fs");
+        
+        // rm()->load_texture("tex1", "./resources/tex1.jpeg");
+
+        // rm()->load_font("font1", "./resources/RDR.ttf");
+    }
 
     void set_framebuffer_size(int width, int height)
     {
@@ -93,9 +110,30 @@ public:
 
         shader->set("P", P*M);
 
-        lineRender.draw(*shader, xa, ya, xb, yb, _color, _line_width);
+        shader->set("ourColor", _color);
+
+		glLineWidth(_line_width);
+
+
+        lineRender.draw(xa, ya, xb, yb);
     }
 
+    void draw_line(glm::vec3 a, glm::vec3 b)
+    {
+        Shader* shader = rm()->shaders("line").get();
+
+        shader->use();
+
+        shader->set("P", P*V*M);
+
+        shader->set("ourColor", _color);
+
+		glLineWidth(_line_width);
+
+
+        lineRender.draw(a.x, a.y, a.z, b.x, b.y, b.z);
+    }
+    
     void draw_line_strip(std::vector<glm::vec3>& points)
     {
         Shader* shader = rm()->shaders("line").get();
@@ -104,7 +142,12 @@ public:
 
         shader->set("P", P*M);
 
-        lineRender.draw(*shader, points, _color, _line_width);
+        shader->set("ourColor", _color);
+
+		glLineWidth(_line_width);
+
+
+        lineRender.draw(points);
     }
 
 
@@ -189,6 +232,16 @@ public:
         M = mat;
     }
 
+    void set_view_mat(glm::mat4& mat)
+    {
+        V = mat;
+    }
+
+    void set_proj_mat(glm::mat4& mat)
+    {
+        P = mat;
+    }
+
     void set_line_width(float width)
     {
         _line_width = width;
@@ -239,6 +292,7 @@ public:
 
     glm::mat4 P;
     glm::mat4 M;
+    glm::mat4 V;
 };
 
 

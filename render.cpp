@@ -24,9 +24,17 @@ void Render::draw_buffer(Buffer* buffer, bool blend_enable)
         blend(false);
 }
 
-void Render::draw_buffer_u(Buffer* buffer, Node* node, Camera* camera, Shader* shader, bool blend_enable)
+void Render::draw_buffer_u(Buffer* buffer, Node* node, Camera* camera, bool blend_enable)
 {
     //std::cout << " iter4" << std::endl;
+
+    Shader* shader = nullptr;
+    
+    if (buffer->get_element_type() == GL_TRIANGLES)
+        shader = rm()->shaders("poly").get();
+    else
+    if (buffer->get_element_type() == GL_LINES)
+        shader = rm()->shaders("line1").get();
 
     // Be sure to activate the shader
     shader->use();

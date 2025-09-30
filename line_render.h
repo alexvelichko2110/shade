@@ -45,12 +45,28 @@ public:
 	    glBindVertexArray(0);
 	}
 
-	void draw(Shader& shader, float xa, float ya, float xb, float yb, glm::vec4& color, float line_width)
+	void draw(float xa, float ya, float za, float xb, float yb, float zb)
 	{
-		shader.set("ourColor", color);
+		glBindVertexArray(VAO);
 
-		glLineWidth(line_width);
+		// Update VBO for each character
+		GLfloat vertices[2][3] = {
+			{ xa,  ya, za },
+			{ xb,  yb, zb },
+		};
 
+		// Update content of VBO memory
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+
+		// glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		// Render line
+		glDrawArrays(GL_LINES, 0, 2);
+	}
+
+	void draw(float xa, float ya, float xb, float yb)
+	{
 		glBindVertexArray(VAO);
 
 		// Update VBO for each character
@@ -69,11 +85,8 @@ public:
 		glDrawArrays(GL_LINES, 0, 2);
 	}
 
-	void draw(Shader& shader, std::vector<glm::vec3>& points, glm::vec4& color, float line_width)
+	void draw(std::vector<glm::vec3>& points)
 	{
-		shader.set("ourColor", color);
-
-		glLineWidth(line_width);
 
 		glBindVertexArray(VAO);
 
