@@ -10,7 +10,6 @@
 #include "node.h"
 
 #include "camera.h"
-#include "render.h"
 
 #include "resource_manager.h"
 
@@ -66,12 +65,6 @@ public:
 
     void draw_buffer_u(Buffer* buffer, Node* node, Camera* camera, bool blend);
 
-    // void set_texture(int slot, Texture* texture)
-    // {
-    //     glActiveTexture ( GL_TEXTURE0 );
-    //     glBindTexture ( GL_TEXTURE_2D, texture->get_texID() );
-    // }
-
 
     void load_resources_all()
     {
@@ -84,9 +77,6 @@ public:
         rm()->load_shader("poly", "./resources/simple_one_mat.vs", "./resources/poly.fs");
         rm()->load_shader("line1", "./resources/simple_one_mat.vs", "./resources/lines.fs");
         
-        // rm()->load_texture("tex1", "./resources/tex1.jpeg");
-
-        // rm()->load_font("font1", "./resources/RDR.ttf");
     }
 
     void set_framebuffer_size(int width, int height)
@@ -108,7 +98,7 @@ public:
 
         shader->use();
 
-        shader->set("P", P*M);
+        shader->set("P", P*V*M);
 
         shader->set("ourColor", _color);
 
@@ -140,7 +130,7 @@ public:
 
         shader->use();
 
-        shader->set("P", P*M);
+        shader->set("P", P*V*M);
 
         shader->set("ourColor", _color);
 
@@ -161,9 +151,20 @@ public:
         
         shader->use();
 
-	    shader->set("P", P*M);
+	    shader->set("P", P*V*M);
 
-        fontRender.draw(*shader, *_font, text.c_str(), x, y, 1.0f, _color);
+        shader->set("textColor", _color);
+
+
+	    glActiveTexture(GL_TEXTURE0);
+
+	    // Render glyph texture over quad
+	    glBindTexture(GL_TEXTURE_2D, _font->get_texture_ID());
+
+    	shader->set("text", 0);
+	    
+
+        fontRender.draw(*_font, text.c_str(), x, y, 1.0f);
 
         glDisable(GL_BLEND);
     }
@@ -174,9 +175,11 @@ public:
         		
         shader->use();
 
-        shader->set("M", P*M);
+        shader->set("M", P*V*M);
+
+        shader->set("ourColor", _color);
 		
-        rectRender.draw_poly(*shader, points, _color);
+        rectRender.draw_poly(points);
     }
 
     void draw_rect(float xc, float yc, float width, float height)
@@ -185,9 +188,11 @@ public:
         		
         shader->use();
 
-        shader->set("M", P*M);
+        shader->set("M", P*V*M);
+
+        shader->set("ourColor", _color);
 		
-        rectRender.draw(*shader, xc, yc, width, height, _color);
+        rectRender.draw(xc, yc, width, height);
     }
 
     void draw_rect_with_texture(float xc, float yc, float width, float height)
@@ -202,13 +207,13 @@ public:
 
         shader->set("ourTexture", 0);
 
-        shader->set("M", P*M);
+        shader->set("M", P*V*M);
 
         glEnable(GL_BLEND);
         // glBlendFunc(GL_ONE, GL_SRC_ALPHA);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        rectRender.draw(*shader, xc, yc, width, height);
+        rectRender.draw(xc, yc, width, height);
 
         glDisable(GL_BLEND);
 
@@ -270,7 +275,7 @@ public:
 
  private:
 
-    void draw_buffer(Buffer* buffer, bool blend_enable);
+    // void draw_buffer(Buffer* buffer, bool blend_enable);
 
     // Texture* _texture;
 

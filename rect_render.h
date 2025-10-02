@@ -46,40 +46,40 @@ public:
         glBindVertexArray(0); // Unbind VAO
 	}
 
-	void draw(Shader& shader, float xc, float yc, float width, float height, glm::vec4& color)
-	{
-		shader.set("ourColor", color);
+	// void draw(Shader& shader, float xc, float yc, float width, float height, glm::vec4& color)
+	// {
+	// 	shader.set("ourColor", color);
 
-		glBindVertexArray(VAO);
+	// 	glBindVertexArray(VAO);
 
-        // Set up vertex data (and buffer(s)) and attribute pointers
-        GLfloat vertices[] = {
-            // Positions         // Texture Coords
-            xc + 0.5f*width, yc + 0.5f*height, 0.0f,  1.0f, 1.0f, // Top Right
-            xc + 0.5f*width, yc - 0.5f*height, 0.0f,  1.0f, 0.0f, // Bottom Right
-            xc - 0.5f*width, yc - 0.5f*height, 0.0f,  0.0f, 0.0f, // Bottom Left
-            xc - 0.5f*width, yc + 0.5f*height, 0.0f,  0.0f, 1.0f  // Top Left
-        };
+    //     // Set up vertex data (and buffer(s)) and attribute pointers
+    //     GLfloat vertices[] = {
+    //         // Positions         // Texture Coords
+    //         xc + 0.5f*width, yc + 0.5f*height, 0.0f,  1.0f, 1.0f, // Top Right
+    //         xc + 0.5f*width, yc - 0.5f*height, 0.0f,  1.0f, 0.0f, // Bottom Right
+    //         xc - 0.5f*width, yc - 0.5f*height, 0.0f,  0.0f, 0.0f, // Bottom Left
+    //         xc - 0.5f*width, yc + 0.5f*height, 0.0f,  0.0f, 1.0f  // Top Left
+    //     };
 
-        GLuint indices[] = {  // Note that we start from 0!
-            0, 1, 3, // First Triangle
-            1, 2, 3  // Second Triangle
-        };
+    //     GLuint indices[] = {  // Note that we start from 0!
+    //         0, 1, 3, // First Triangle
+    //         1, 2, 3  // Second Triangle
+    //     };
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, 4*sizeof(GLfloat)*5, vertices);
+    //     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    //     glBufferSubData(GL_ARRAY_BUFFER, 0, 4*sizeof(GLfloat)*5, vertices);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, 6*sizeof(GLuint), indices);
+    //     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    //     glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, 6*sizeof(GLuint), indices);
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    //     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
-        glBindVertexArray(0);
-	}
+    //     glBindVertexArray(0);
+	// }
 
-    void draw_poly(Shader& shader, std::vector<glm::vec3>& points, glm::vec4& color)
+    void draw_poly(std::vector<glm::vec3>& points)
 	{
-		shader.set("ourColor", color);
+		// shader.set("ourColor", color);
 
         
         int size_vertices_array = 5*sizeof(GLfloat)* points.size();
@@ -157,7 +157,7 @@ public:
         free(indices);
 	}
 
-    void draw(Shader& shader, float xc, float yc, float width, float height)
+    void draw(float xc, float yc, float width, float height)
 	{
 		// shader.set("alpha", 0.2f);
 

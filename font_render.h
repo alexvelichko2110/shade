@@ -36,19 +36,19 @@ public:
 	    glBindVertexArray(0);
 	}
 
-	void draw(Shader& shader, Font& font, const char* text, GLfloat x, GLfloat y, GLfloat scale, const glm::vec4& color)
+	void draw(Font& font, const char* text, GLfloat x, GLfloat y, GLfloat scale)
 	{
 	    // Activate corresponding render state
 
-		shader.set("textColor", color);
+		// shader.set("textColor", color);
 
 
-	    glActiveTexture(GL_TEXTURE0);
+	    // glActiveTexture(GL_TEXTURE0);
 
-	    // Render glyph texture over quad
-	    glBindTexture(GL_TEXTURE_2D, font.get_texture_ID());
+	    // // Render glyph texture over quad
+	    // glBindTexture(GL_TEXTURE_2D, font.get_texture_ID());
 
-    	shader.set("text", 0);
+    	// shader.set("text", 0);
 	    
 
 		glBindVertexArray(VAO);

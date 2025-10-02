@@ -2,27 +2,27 @@
 
 #include "render.h"
 
-void Render::draw_buffer(Buffer* buffer, bool blend_enable)
-{    
-    if (blend_enable)
-        blend(true);
+// void Render::draw_buffer(Buffer* buffer, bool blend_enable)
+// {    
+//     if (blend_enable)
+//         blend(true);
 
 
-    buffer->enable(true);
+//     buffer->enable(true);
 
-    int index_count = buffer->get_index_count();
-    int elem_type  = buffer->get_element_type();
+//     int index_count = buffer->get_index_count();
+//     int elem_type  = buffer->get_element_type();
 
-    // std::cout << " index count " << index_count << std::endl;
+//     // std::cout << " index count " << index_count << std::endl;
 
-    glDrawElements(elem_type, index_count, GL_UNSIGNED_INT, 0);
+//     glDrawElements(elem_type, index_count, GL_UNSIGNED_INT, 0);
 
 
-    buffer->enable(false);
+//     buffer->enable(false);
 
-    if (blend_enable)
-        blend(false);
-}
+//     if (blend_enable)
+//         blend(false);
+// }
 
 void Render::draw_buffer_u(Buffer* buffer, Node* node, Camera* camera, bool blend_enable)
 {
