@@ -75,6 +75,7 @@ set (HEADERS
 ./texture.h
 ./font.h
 ./buffer.h
+./mesh.h
 ./resource_manager.h
 ./render.h
 ./node.h
@@ -92,6 +93,7 @@ set (SOURCES
 ./texture.cpp
 ./font.cpp
 ./buffer.cpp
+./mesh.cpp
 ./resource_manager.cpp
 ./render.cpp
 ./node.cpp
