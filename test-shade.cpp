@@ -28,6 +28,9 @@
 
 #include "framebuffer.h"
 
+#include "ui.h"
+
+
 // Window dimensions
 GLuint WIDTH = 1400, HEIGHT = 900;
 
@@ -51,6 +54,8 @@ float YAW = HEIGHT* 0.5;
 
 float cam_alpha = 270.0;
 float cam_radius = 300.0;
+
+uiwidget::UI ui;
 
 
 void error ( int error, const char * description )
@@ -104,6 +109,16 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
         node.set_pitch (PITCH);
         node.set_yaw (YAW);
     }
+
+
+    uiwidget::Event e;
+
+    e._name = "mouse_move";
+    e.x = xpos;
+    e.y = HEIGHT - ypos;       
+
+    ui.mouse_move_event_up(&e);
+
 }
 
 
@@ -117,6 +132,44 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
     {
         mouse_press = false;
+    }
+
+
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+
+        // std::cout << "xpos " << xpos << "ypos " << ypos << std::endl;
+        
+        uiwidget::Event e;
+
+        e._name = "mouse_button_right_down";
+        e.x = xpos;
+        e.y = HEIGHT - ypos;       
+
+        ui.mouse_click_event_up(&e);
+
+    }
+
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+    {
+
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+
+        // std::cout << "xpos " << xpos << "ypos " << ypos << std::endl;
+
+        uiwidget::Event e;
+
+        e._name = "mouse_button_right_up";
+        e.x = xpos;
+        e.y = HEIGHT - ypos;       
+
+        ui.mouse_click_event_up(&e);
+
+
     }
 }
 
@@ -199,12 +252,32 @@ int main( int argc, char** argv )
     render.load_resources_all();
 
     rm()->load_font("font1", "./resources/RDR.ttf");
-
+    rm()->load_font("font2", "./resources/font.ttf");
 
     render.set_framebuffer_size(WIDTH, HEIGHT);
     render.init();
 
 
+    // ui
+    uiwidget::PopupMenu menu;
+
+    menu.add_line("item 1\n");
+    menu.add_line("item 2\n");
+    menu.add_line("item 3\n");
+
+    menu.set_rect(400.0, 450, 200, 200);
+
+    uiwidget::Widget widget;
+
+    widget.set_rect(100.0, 50, 200, 200);
+
+    ui.add_widget(&menu);
+    ui.add_widget(&widget);
+
+
+
+
+    // geometry
     Texture *cube_tex = Texture::load("./resources/tex1.jpeg");
 
     Mesh cube;
@@ -388,6 +461,7 @@ int main( int argc, char** argv )
         //begin 2d
         render.reset();
 
+
         // print text
         Font* font = rm()->fonts("font1").get();
 
@@ -404,6 +478,8 @@ int main( int argc, char** argv )
 
         
         render.draw_text(buff, 10.0f, HEIGHT - 40.0f);
+
+        ui.draw(&render);
 
 
         // glm::mat4 V1 = glm::mat4(1.0);

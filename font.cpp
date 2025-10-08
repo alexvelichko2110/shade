@@ -131,3 +131,64 @@ void Font::save_texture_to_file(const std::string& filename)
 Font::~Font() {
     glDeleteTextures(1, &tex);
 }
+
+float compute_line_length(const std::string& text, Font* font, float scale)
+{
+    const char* temp = text.c_str();
+
+	float sx = 0.f;
+
+    // float _widthSpace = 2;
+
+	// // Adjust for character spacing
+
+    // while( *temp )
+    // {
+    // 	unsigned char c = *temp;// + 48;
+
+    // 	if (c <= 127)
+    // 		temp += 1;
+    // 	else 
+	// 	{
+    // 		c = *(temp + 1) + 48;
+    // 		temp += 2;
+    // 	}
+
+    //     Character ch = font->get_glyph(c);
+
+    //     float w = ch.Size.x;
+
+
+	// 	float sw = scale*w;
+
+	// 	if (c != 32 )
+	// 	{
+	// 		sx += sw + _widthSpace;
+	// 	}
+	// 	else
+	// 	{
+	// 		sx += 2*_widthSpace;
+	// 	}
+	// }
+
+
+    while( *temp )
+    {
+        unsigned char c = *temp;// + 48;
+
+        if (c <= 127)
+            temp += 1;
+        else {
+            c = *(temp + 1) + 48;
+            temp += 2;
+        }
+
+        Character ch = font->get_glyph(c);//Characters[c];
+
+        // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+        sx += (ch.Advance >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+    }
+
+
+    return sx;
+}

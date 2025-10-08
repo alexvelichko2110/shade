@@ -100,12 +100,15 @@ set (SOURCES
 ./camera.cpp
 ./font_render.cpp
 ./framebuffer.cpp
+./popup_menu.cpp
+./widget.cpp
+./ui.cpp
 )
 
 add_library(${PROJECT} SHARED ${SOURCES})
 
-add_executable (test-${PROJECT} test-shade.cpp ${SOURCES})
-target_link_libraries (test-${PROJECT} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} freeimage freetype SOIL)
+add_executable (test-shade test-shade.cpp ${SOURCES})
+target_link_libraries (test-shade ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} freeimage freetype SOIL)
 
 add_executable (test-model test-model.cpp ${SOURCES})
 target_link_libraries (test-model ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} freeimage freetype SOIL)

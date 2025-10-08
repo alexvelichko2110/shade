@@ -68,4 +68,7 @@ private:
 	Character Characters[256];
 };
 
+float compute_line_length(const std::string& text, Font* font, float scale);
+
+
 #endif // FONT_H_
