@@ -205,7 +205,7 @@ int main( int argc, char** argv )
     render.init();
 
 
-    Texture *cube_tex = Texture::load("./resources/tex1.jpeg");
+    Texture *cube_tex = Texture::load("./resources/tex2.jpeg");
 
     Mesh cube;
 
@@ -297,7 +297,7 @@ int main( int argc, char** argv )
         node.build_this();
         
  
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        // glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         // draw all objects
 
@@ -348,18 +348,18 @@ int main( int argc, char** argv )
 
         // glm::mat4 M1 = node.get_mat_inverse();
         
-        // glm::mat4 M1 = M*get_mat_node(50, 20, 50, 40.0, 60.0);
+        glm::mat4 M1 = M*get_mat_node(50, 20, 50, 40.0, 60.0);
         
-        // render.set_transform(M1);
+        render.set_transform(M1);
         
-        // render.set_color(glm::vec4(1.0, 0.0, 0.0, 1.0));
-        // render.draw_line(glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 100.0, 0.0));
+        render.set_color(glm::vec4(1.0, 0.0, 0.0, 1.0));
+        render.draw_line(glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 100.0, 0.0));
 
-        // render.set_color(glm::vec4(0.0, 1.0, 0.0, 1.0));
-        // render.draw_line(glm::vec3(0.0, 0.0, 0.0), glm::vec3(100.0, 0.0, 0.0));
+        render.set_color(glm::vec4(0.0, 1.0, 0.0, 1.0));
+        render.draw_line(glm::vec3(0.0, 0.0, 0.0), glm::vec3(100.0, 0.0, 0.0));
 
-        // render.set_color(glm::vec4(0.0, 0.0, 1.0, 1.0));
-        // render.draw_line(glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 0.0, 100.0));
+        render.set_color(glm::vec4(0.0, 0.0, 1.0, 1.0));
+        render.draw_line(glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 0.0, 100.0));
 
 
         Shader* shader = rm()->shaders("rect_tex").get();
@@ -372,9 +372,9 @@ int main( int argc, char** argv )
         shader->set("ourTexture", 0);
 
 
-        M = glm::scale(M, glm::vec3(20.0));
+        M1 = glm::scale(M1, glm::vec3(20.0));
 
-        shader->set("M", P*V*M);
+        shader->set("M", P*V*M1  );
 
 
         glBindVertexArray(VAO);
@@ -384,6 +384,7 @@ int main( int argc, char** argv )
         glBindVertexArray(0);
 
         render.depth(false);
+
 
         //begin 2d
         render.reset();
@@ -404,71 +405,6 @@ int main( int argc, char** argv )
 
         
         render.draw_text(buff, 10.0f, HEIGHT - 40.0f);
-
-
-        // glm::mat4 V1 = glm::mat4(1.0);
-
-        // render.set_view_mat(V1);
-
-
-        // draw line
-        glm::mat4 mat = get_mat_node(500.0f, 400.0f, 30.0f);
-
-        render.set_transform(mat);
-        render.set_line_width(1.0);
-        render.set_color(glm::vec4(1.0, 0.0, 0.0, 1.0));
-
-        render.draw_line(0.0, -100.0, 0.0, 100.0);
-        render.draw_line(-100.0, 0.0, 100.0, 0.0);
-
-
-        // draw line strip
-        mat = get_mat_node(700.0f, 300.0f, 0.0f);
-
-        render.set_transform(mat);
-        render.set_color(glm::vec4(0.0, 1.0, 0.0, 1.0));
-        render.set_line_width(3.0);
-
-        // render.draw_line(-50.0, -40.0, 20.0, 40.0);
-
-        std::vector<glm::vec3> points;
-
-        points.push_back(glm::vec3(-50.0, -50.0, 0.0));
-        points.push_back(glm::vec3(-90.0, 100.0, 0.0));
-        points.push_back(glm::vec3(40.0, 80.0, 0.0));
-        points.push_back(glm::vec3(140.0, -20.0, 0.0));
-        points.push_back(glm::vec3(-50.0, -50.0, 0.0));
-
-        render.draw_line_strip(points);
-
-
-        // draw poly
-        mat = get_mat_node(200.0f, 300.0f, 0.0f);
-
-        render.set_transform(mat);
-        render.set_color(glm::vec4(0.0, 0.3, 1.0, 0.3));
-
-        std::vector<glm::vec3> poly;
-
-        poly.push_back(glm::vec3(-50.0, -50.0, 0.0));
-        poly.push_back(glm::vec3(-90.0, 100.0, 0.0));
-        poly.push_back(glm::vec3(40.0, 80.0, 0.0));
-        poly.push_back(glm::vec3(140.0, -20.0, 0.0));
-        poly.push_back(glm::vec3(-50.0, -50.0, 0.0));
-
-        render.draw_poly(poly);
-
-
-        // draw rect & rect with texture
-        glm::mat4 M2 = glm::mat4(1.0);
-        render.set_transform(M2);
-        
-        render.set_color(glm::vec4(0.0, 0.2, 0.2, 0.2));
-        render.draw_rect(200, 200, 200, 200);
-
-        render.set_texture(0, cube_tex);
-        render.draw_rect_with_texture(400, 200, 200, 200);
-
 
 
        // Swap the screen buffers

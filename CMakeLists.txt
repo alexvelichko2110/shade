@@ -105,8 +105,10 @@ set (SOURCES
 add_library(${PROJECT} SHARED ${SOURCES})
 
 add_executable (test-${PROJECT} test-shade.cpp ${SOURCES})
-
 target_link_libraries (test-${PROJECT} ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} freeimage freetype SOIL)
+
+add_executable (test-model test-model.cpp ${SOURCES})
+target_link_libraries (test-model ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} freeimage freetype SOIL)
 
 add_custom_target(clean-all
     COMMAND rm -f Makefile
